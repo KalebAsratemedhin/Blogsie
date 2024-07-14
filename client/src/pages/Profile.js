@@ -18,14 +18,11 @@ import {Link} from 'react-router-dom'
 const Profile = () => {
     const {state, dispatch} = useContext(AuthContext)
 
-
-
     useEffect(() => {
         const loadProfile = async () => {
             await getProfile(dispatch, state.username)
-
         }
-        console.log("prof", state)
+
         if(!state.loading && !state.user && !state.error){
             loadProfile()
         }

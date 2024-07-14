@@ -42,8 +42,6 @@ function AppRoutes() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-blog" element={<CreateBlog />} />
 
-
-            
           </Route>
 
         </Routes> 

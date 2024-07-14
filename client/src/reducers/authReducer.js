@@ -30,7 +30,6 @@ export const authReducer = (state, action) => {
     
         case SIGNUP_SUCCESS:
         case LOGIN_SUCCESS:
-            console.log("success login")
             return { ...state, loading: false, isAuthenticated: true, username: action.payload };
     
         case SIGNUP_FAILURE:

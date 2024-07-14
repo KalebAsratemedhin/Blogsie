@@ -19,14 +19,9 @@ const Login = () => {
     const {state, dispatch} = useContext(AuthContext)
     const [credentials, setCredentials] = useState({username: '', password: ''})
 
-
-
     useEffect(() => {
-      console.log("statey", state)
       if(state.isAuthenticated){
-        console.log("state", state, state.user)
         navigate('/profile')
-
       }
 
     }, [state])
@@ -37,13 +32,11 @@ const Login = () => {
     }
 
     const handleSubmit = async () => {
-      console.log("cred login", credentials)
       await login(dispatch, credentials)
     }
 
   return (
-    <Container sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'
-}}>
+    <Container sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
         <Card sx={{padding: '30px', width: '40%', boxShadow: '5'}}>
             <form action="submit">
             <TextField id="username" value={credentials.username} onChange={handleInputChange} label='Username' variant="outlined"  fullWidth sx={{marginBottom: '10px'}} />
