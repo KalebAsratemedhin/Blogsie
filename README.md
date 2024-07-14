@@ -7,4 +7,4 @@ Blogsie is a platform where users can post and explore blogs exchanging ideas, c
  - React Context API for state management
 
 ### Message from the Developer
-This is a project that introduced me to material UI and state management with the context api together with the useReducer hook in react. It is still a work in progress but the main features are almost completed. I plan to integrate other cool features and deploy it in this summer.
+This is a project that introduced me to material UI and state management with the context api in react. It is still a work in progress but the main features are almost completed. I plan to integrate other cool features and deploy it in this summer.
