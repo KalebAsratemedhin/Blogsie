@@ -56,14 +56,11 @@ export const login = async (dispatch, credentials) => {
     const response = await api.post('/auth/login', credentials);
 
     if(response.status === 200){
-      localStorage.setItem('username', response.data.username)
+      // localStorage.setItem('username', response.data.username)
       dispatch({ type: LOGIN_SUCCESS, payload: response.data.username });
       
     }
-    console.log(response)
   } catch (error) {
-   
-    console.log("heee")
     dispatch({ type: LOGIN_FAILURE, payload: error.response.data });
   }
 };

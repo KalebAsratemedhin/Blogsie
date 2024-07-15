@@ -10,7 +10,6 @@ const getProfile = async (req, res) => {
         return res.status(404).json({message: "No such user!"})
     }
 
-    // const followers = await Follw
 
     res.status(200).json({
         username: user.username,

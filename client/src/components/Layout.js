@@ -1,23 +1,3 @@
-// import { useLocation } from 'react-router-dom';
-// import Sidebar from './SideBar';
-// import { Container } from '@mui/material';
-
-// const Layout = ({ children }) => {
-//   const location = useLocation()
-                
-//     return (
-//         <Container>
-//             {location.pathname != "/" ?
-//                <Sidebar />
-
-//                 : ""}
-//             {children}
-//         </Container>
-//     );
-// };
-
-// export default Layout;
-
 import  { useContext, useState } from 'react';
 import { CssBaseline, Card, Box, Container, AppBar, Toolbar, IconButton, Typography, useTheme, useMediaQuery } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';

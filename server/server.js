@@ -8,6 +8,8 @@ const blogRoutes = require('./routes/blog.js')
 const authRoutes = require('./routes/auth.js')
 const followerRoutes = require('./routes/follower.js')
 const profileRoutes = require('./routes/profile.js')
+const searchRoutes = require('./routes/search.js')
+
 const cors = require('cors');    
 // require('./strategies/jwt_strategy'); 
 
@@ -34,7 +36,9 @@ app.use(cookieParser());
 app.use('/blogs', blogRoutes);
 app.use('/follow', followerRoutes);
 app.use('/auth', authRoutes);
-app.use('/profile', profileRoutes);
+app.use('/profile', profileRoutes)
+app.use('/search', searchRoutes)
+
 
 
 
