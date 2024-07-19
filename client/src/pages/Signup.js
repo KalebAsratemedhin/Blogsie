@@ -29,7 +29,7 @@ const Signup = () => {
     }
 
     useEffect(() => {
-      if(state && state.user){
+      if(state && state.username){
         console.log("state", state, state.user)
         navigate('/profile')
 

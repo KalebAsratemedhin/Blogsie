@@ -20,16 +20,16 @@ const SideBar = ({ mobileOpen, handleDrawerToggle }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate()
   const menu = {
-    'Profile': ['/profile', <Person />],
     'Create Blog': ['/create-blog',  <ArticleIcon /> ],
     'Blogs': ['/blogs', <NewspaperIcon /> ],
-    'People': ['/people',<PeopleIcon /> ],
     'Home': ['/', <HomeIcon />]
   }
   const {state: authState, dispatch: authDispatch} = useContext(AuthContext)
 
   const handleLogout = async (e) => {
     await logout(authDispatch)
+    navigate('/')
+
   }
 
   const handleClick = (entry) => {

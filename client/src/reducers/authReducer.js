@@ -8,7 +8,8 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
-    LOGOUT_REQUEST
+    LOGOUT_REQUEST,
+    INIT_USER
   } from '../actionTypes/auth';
 
 export const authInitialState = {
@@ -23,6 +24,8 @@ export const authInitialState = {
 
 export const authReducer = (state, action) => {
     switch (action.type) {
+        case INIT_USER:
+            return {...state, username: action.payload.username, user: action.payload }
         case SIGNUP_REQUEST:
         case LOGIN_REQUEST:
         case PROFILE_REQUEST:
@@ -30,7 +33,9 @@ export const authReducer = (state, action) => {
     
         case SIGNUP_SUCCESS:
         case LOGIN_SUCCESS:
-            return { ...state, loading: false, isAuthenticated: true, username: action.payload };
+            localStorage.setItem('user', JSON.stringify(action.payload))
+
+            return { ...state, loading: false, isAuthenticated: true, username: action.payload.username, user: action.payload };
     
         case SIGNUP_FAILURE:
         case LOGIN_FAILURE:

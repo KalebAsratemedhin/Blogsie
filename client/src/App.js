@@ -11,6 +11,7 @@ import { AuthContext } from "./contexts/AuthContext";
 import { useContext, useEffect } from "react";
 import Profile from "./pages/Profile";
 import AppProviders from "./contexts/AppProvider";
+import SearchResults from "./pages/SearchResults";
 
 
 function App() {
@@ -34,15 +35,18 @@ function AppRoutes() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
 
-          <Route element={<Layout />}>
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blogs/:id" element={<BlogDetails />} />
-            <Route path="/people" element={<People />} />
-            <Route path="/public/*" element={<People />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/create-blog" element={<CreateBlog />} />
+          {state.username && 
+            <Route>
+            <Route element={<Layout />}>
+              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/blogs/:id" element={<BlogDetails />} />
+              <Route path="/search" element={<SearchResults />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/create-blog" element={<CreateBlog />} />
 
+            </Route>
           </Route>
+          }
 
         </Routes> 
     </Router>

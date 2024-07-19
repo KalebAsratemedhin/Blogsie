@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const connectDatabase = require('./config/db.js');
 const blogRoutes = require('./routes/blog.js')
 const authRoutes = require('./routes/auth.js')
-const followerRoutes = require('./routes/follower.js')
+// const followerRoutes = require('./routes/follower.js')
 const profileRoutes = require('./routes/profile.js')
 const searchRoutes = require('./routes/search.js')
 
@@ -34,7 +34,7 @@ app.use(cookieParser());
 // app.use(passport.initialize());
 
 app.use('/blogs', blogRoutes);
-app.use('/follow', followerRoutes);
+// app.use('/follow', followerRoutes);
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes)
 app.use('/search', searchRoutes)

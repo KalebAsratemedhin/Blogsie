@@ -1,4 +1,5 @@
-const User = require('../models/userModel')
+const User = require('../models/user')
+
 
 const getProfile = async (req, res) => {
     const {username} = req.params
@@ -16,6 +17,8 @@ const getProfile = async (req, res) => {
         fullName: user.fullName,
         bio: user.bio,
         email: user.email,
+        followers: user.followers,
+        following: user.following
 
     })
 

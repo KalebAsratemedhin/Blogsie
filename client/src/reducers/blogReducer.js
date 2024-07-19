@@ -8,7 +8,7 @@ import {
 } from '../actionTypes/blog';
 
 export const initialState = {
-  blogs: [],
+  blogs: null,
   loading: false,
   error: null,
 };

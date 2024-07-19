@@ -20,7 +20,7 @@ const BlogCard = ({blog}) => {
     <Card key={blog._id} sx={{margin: '10px', boxShadow: '2', '&:hover': {boxShadow: '5'}}}>
           <CardHeader
            title={blog.title}
-           subheader={<Typography>By {blog.fullName} <Typography>{new Date(blog.date).toDateString()} </Typography></Typography> }
+           subheader={<Typography>By @{blog.username} <Typography>{new Date(blog.date).toDateString()} </Typography></Typography> }
            
           /> 
           <CardContent>

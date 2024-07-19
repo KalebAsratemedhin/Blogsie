@@ -5,12 +5,14 @@ import {
     BLOGS_REQUEST,
     BLOGS_SUCCESS,
     BLOGS_FAILURE,
+    SELECT_USER
 
   } from '../actionTypes/search';
 
 export const searchInitialState = {
     users: [],
-    blogs: [],
+    blogs: null,
+    selectedUser: null,
     loading: false,
     error: null,
   };
@@ -33,6 +35,10 @@ export const searchReducer = (state, action) => {
         case BLOGS_FAILURE:
         case SEARCH_FAILURE:
             return { ...state, loading: false, error: action.payload };
+
+        case SELECT_USER:
+            return {...state, selectedUser: action.payload, blogs: null}
+            
     
         default:
             return state;

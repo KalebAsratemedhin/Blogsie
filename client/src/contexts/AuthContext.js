@@ -6,11 +6,6 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, authInitialState);
 
-  
-  // const handleSession = async () => {
-  //   console.log("checking session")
-  //   await checkSession(dispatch)
-  // }
 
   useEffect( () => {
     getLoggedIn(dispatch)

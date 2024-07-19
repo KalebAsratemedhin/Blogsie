@@ -9,14 +9,14 @@ import {
   LOGOUT_REQUEST,
   PROFILE_REQUEST,
   PROFILE_SUCCESS,
-  PROFILE_FAILURE
+  PROFILE_FAILURE,
+  INIT_USER
 } from '../actionTypes/auth';
 
 export const getLoggedIn = (dispatch) => {
-  const username = localStorage.getItem('username')
-  if(username){
-    console.log("username", username)
-    dispatch({ type: LOGIN_SUCCESS, payload: username });
+  const user = JSON.parse(localStorage.getItem('user'))
+  if(user){
+    dispatch({ type: INIT_USER, payload: user });
 
   }
   
@@ -41,10 +41,10 @@ export const signup = async (dispatch, userData) => {
   try {
     const response = await api.post('/auth/signup', userData);
 
-    if(response.data && response.data.username){
-      localStorage.setItem('username', response.data.username)
-      dispatch({ type: SIGNUP_SUCCESS, payload: response.data.username });
+    if(response.status == 201){
+      dispatch({ type: SIGNUP_SUCCESS, payload: response.data.user });
     }
+
   } catch (error) {
     dispatch({ type: SIGNUP_FAILURE, payload: error.response.data });
   }
@@ -55,9 +55,10 @@ export const login = async (dispatch, credentials) => {
   try {
     const response = await api.post('/auth/login', credentials);
 
-    if(response.status === 200){
+    if(response.status === 201){
       // localStorage.setItem('username', response.data.username)
-      dispatch({ type: LOGIN_SUCCESS, payload: response.data.username });
+      console.log("res log", response.data)
+      dispatch({ type: LOGIN_SUCCESS, payload: response.data.user });
       
     }
   } catch (error) {

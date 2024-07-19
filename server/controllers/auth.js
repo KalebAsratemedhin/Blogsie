@@ -1,4 +1,4 @@
-const User = require('../models/userModel')
+const User = require('../models/user')
 const {verifyToken, generateToken} = require('../utils/jwtUtils')
 const bcrypt = require('bcrypt')
 
@@ -47,9 +47,9 @@ const signup = async (req, res) => {
 
         })
         const token = generateToken(username, email);
+
         res.cookie('token', token, { httpOnly: true, secure: true }); 
-        res.status(201).json({ username, email});
-        console.log("signed up")
+        res.status(201).json({ user });
 
     } catch (error) {
         res.status(400).json({ message: 'Error registering user', error });
@@ -65,8 +65,9 @@ const login = async (req, res) => {
         bcrypt.compare(password, user.password).then(isMatch => {
             if (isMatch) {
                 const token = generateToken(user.username, user.email);
+                
                 res.cookie('token', token, { httpOnly: true, secure: true });
-                res.status(200).json({ username: user.username, email: user.email });
+                res.status(201).json({ user });
             } else {
               return res.status(400).json({ message: 'Invalid username or password' });
             }
