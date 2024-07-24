@@ -5,7 +5,8 @@ import {
     TextField, 
     Typography, 
     Box,
-    styled
+    styled,
+    Alert
 } from '@mui/material'
 import { Send, SendAndArchive } from '@mui/icons-material'
 import {  Link, useNavigate } from 'react-router-dom'
@@ -50,6 +51,11 @@ const Login = () => {
             <Box sx={{marginTop: '20px'}}>
               <Button onClick={handleSubmit} endIcon={<Send />} variant='contained'  sx={{color: 'white', backgroundColor: 'RGB(123, 45, 78)', width: '100%', '&:hover': {backgroundColor: 'RGB(123, 45, 78, 1)', }}}>Login</Button>
             </Box>
+            {state?.error && (
+                <Alert severity="error" sx={{margin: '10px'}}>
+                  {state?.error}
+                </Alert>
+              )}
             
             <Typography sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 Don't have an account? <Button sx={{paddingBottom: '8px'}} onClick={() => {

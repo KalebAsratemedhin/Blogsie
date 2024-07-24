@@ -18,6 +18,8 @@ api.interceptors.response.use(
         if (error.response.status === 401 && error.response.data === 'Not Authorized') {
           console.log("deleted username")
           localStorage.removeItem('username');
+          localStorage.removeItem('user');
+
           window.location.href = '/';
         }
       }

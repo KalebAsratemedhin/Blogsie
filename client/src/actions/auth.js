@@ -46,7 +46,7 @@ export const signup = async (dispatch, userData) => {
     }
 
   } catch (error) {
-    dispatch({ type: SIGNUP_FAILURE, payload: error.response.data });
+    dispatch({ type: SIGNUP_FAILURE, payload: error.response.data.message });
   }
 };
 
@@ -56,13 +56,12 @@ export const login = async (dispatch, credentials) => {
     const response = await api.post('/auth/login', credentials);
 
     if(response.status === 201){
-      // localStorage.setItem('username', response.data.username)
       console.log("res log", response.data)
       dispatch({ type: LOGIN_SUCCESS, payload: response.data.user });
       
     }
   } catch (error) {
-    dispatch({ type: LOGIN_FAILURE, payload: error.response.data });
+    dispatch({ type: LOGIN_FAILURE, payload: error.response.data.message });
   }
 };
 
@@ -70,6 +69,8 @@ export const logout = async (dispatch) => {
   await api.post('/auth/logout');
   dispatch({ type: LOGOUT_REQUEST });
   localStorage.removeItem('username')
+  localStorage.removeItem('user')
+
 
 };
 
@@ -79,6 +80,28 @@ export const getProfile = async (dispatch, username) => {
     const response = await api.get(`/profile/${username}`);
     dispatch({ type: PROFILE_SUCCESS, payload: response.data });
   } catch (error) {
-    dispatch({ type: PROFILE_FAILURE, payload: error.response.data });
+    dispatch({ type: PROFILE_FAILURE, payload: error.response.data.message });
   }
 };
+
+export const uploadProfilePic = async (dispatch, pic) => {
+  dispatch({type: PROFILE_REQUEST })
+  console.log("upload pic", pic)
+  // const formData = new FormData();
+  
+  try {
+    const response = await api.post(`/profile/profile-pic`,pic,{
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },}
+    );
+  console.log("upload pic res", response)
+
+    if (response.status === 201){
+      dispatch({ type: PROFILE_SUCCESS, payload: response.data });
+
+    }
+  } catch (error) {
+    dispatch({ type: PROFILE_FAILURE, payload: error.response.data.message });
+  }
+}

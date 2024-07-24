@@ -22,13 +22,9 @@ const Blogs = () => {
 
     }
     if(state.username && !blogState.loading && !blogState.error && !blogState.blogs){
-        console.log("blogs", blogState.blogs)
+        getBlogs()
+
     }
-
-    getBlogs()
-
-
-    console.log("blogser", blogState)
 
   }, [])
 
@@ -40,8 +36,7 @@ const Blogs = () => {
       My Blogs
     </Typography>
     <Box sx={{display: 'flex'}}>
-      {blogs.map((blog) => {
-        console.log(blog, 'blog')
+      {blogs?.map((blog) => {
         return <BlogCard key={blog.fullName} blog={blog} />
       })}
     </Box>

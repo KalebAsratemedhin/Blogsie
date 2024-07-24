@@ -1,4 +1,13 @@
-import { Container, Card, CardContent, TextField, Button, Box } from '@mui/material'
+import { 
+  Container, 
+  Card, 
+  CardContent, 
+  TextField, 
+  Button, 
+  Box,
+  Snackbar,
+  Alert
+} from '@mui/material'
 import { Send, SendAndArchive } from '@mui/icons-material'
 import { AuthContext } from '../contexts/AuthContext'
 import { useContext, useEffect, useState } from 'react'
@@ -8,6 +17,8 @@ import { addBlog } from '../actions/blog'
 const CreateBlog = () => {
   const {state: authState, dispatch: authDispatch} = useContext(AuthContext)
   const {state: blogState, dispatch: blogDispatch} = useContext(BlogContext)
+  const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState('')
   const [blog, setBlog] = useState({title: '', body: '', date: new Date().toISOString().split('T')[0]})
 
 
@@ -21,6 +32,14 @@ const CreateBlog = () => {
 
     if(authState.username){
       await addBlog(blogDispatch, blog )
+
+      if(!blogState.error){
+        setSnackbarMessage("Blog created Successfully.")
+        setSnackbarOpen(true)
+      } else{
+        setSnackbarMessage("Error creating blog. ")
+        setSnackbarOpen(true)
+      }
     }
   }
 
@@ -29,6 +48,10 @@ const CreateBlog = () => {
     setBlog({...blog, [id]: value})
 
   }
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
   return (
     <Container>
       <Card sx={{border: 'black', boxShadow: '8', width: '50%', margin: '0 auto'}}>
@@ -46,6 +69,16 @@ const CreateBlog = () => {
         </CardContent>
         
       </Card>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={ blogState.error ? "error" : "success"} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   )
 }

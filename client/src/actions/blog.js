@@ -12,9 +12,12 @@ import {
 export const fetchBlogs = async (dispatch, username) => {
   dispatch({ type: FETCH_BLOGS_REQUEST });
   try {
+    console.log("username", username)
     const response = await api.get(`/blogs/${username}`); 
     dispatch({ type: FETCH_BLOGS_SUCCESS, payload: response.data });
   } catch (error) {
+    console.log("err", error)
+
     dispatch({ type: FETCH_BLOGS_FAILURE, payload: error.message });
   }
 };
@@ -26,6 +29,8 @@ export const addBlog = async (dispatch, blog) => {
     dispatch({ type: ADD_BLOG, payload: response.data });
   } catch (error) {
     console.error('Failed to add blog:', error);
+    dispatch({ type: FETCH_BLOGS_FAILURE, payload: error.message });
+
   }
 };
 

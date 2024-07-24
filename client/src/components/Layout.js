@@ -83,7 +83,6 @@ const Layout = ({children}) => {
 
   const handleSearch = () => {
     if (location.pathname != '/search'){
-      alert('navigate')
       navigate('/search')
     }
     searchUsers(searchDispatch, searchQuery)
