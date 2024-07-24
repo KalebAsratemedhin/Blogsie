@@ -4,6 +4,7 @@ const getBlogs = async (req, res) => {
     const {username} = req.params
     try{
         const blogs = await Blog.find({username})
+        console.log("my blogs", blogs)
         res.status(200).json(blogs)
     } catch(error){
         res.status(500).json({message: error})
@@ -14,7 +15,7 @@ const createBlog = async (req, res) => {
     try{
         const {title, body, date} = req.body
 
-        const {username} = req.user
+        // const {username} = req.user
         
         const newBlog = await Blog.create({
             title,

@@ -9,6 +9,7 @@ const verifyToken = (token) => {
   console.log("hellow", token)
   return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
+      console.log("hey")
       throw Error("Not Authorized")
     }
   

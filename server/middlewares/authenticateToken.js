@@ -13,6 +13,7 @@ const authenticateToken = async (req, res, next) => {
     next() 
   } 
   } catch(error){
+    console.log("hello sent error")
       if(error.message == "Not Authorized"){
         // return res.status(401).json({message: error.message})
         return res.status(401).json(error.message)
