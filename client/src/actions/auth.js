@@ -86,8 +86,6 @@ export const getProfile = async (dispatch, username) => {
 
 export const uploadProfilePic = async (dispatch, pic) => {
   dispatch({type: PROFILE_REQUEST })
-  console.log("upload pic", pic)
-  // const formData = new FormData();
   
   try {
     const response = await api.post(`/profile/profile-pic`,pic,{
@@ -98,7 +96,7 @@ export const uploadProfilePic = async (dispatch, pic) => {
   console.log("upload pic res", response)
 
     if (response.status === 201){
-      dispatch({ type: PROFILE_SUCCESS, payload: response.data });
+      // dispatch({ type: PROFILE_SUCCESS, payload: response.data });
 
     }
   } catch (error) {

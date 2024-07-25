@@ -2,18 +2,18 @@ import {Container, AppBar, Toolbar, Button, Typography, Box} from '@mui/material
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
-import { selectUser } from '../actions/search';
-import { SearchContext } from '../contexts/SearchContext';
+import { selectUser } from '../actions/user';
+import { UserContext } from '../contexts/UserContext';
 
 
 const Home = () => {
     const navigate = useNavigate()
     const {state: authState} = useContext(AuthContext)
-    const {state: searchState, dispatch: searchDispatch} = useContext(SearchContext)
+    const {state: userState, dispatch: userDispatch} = useContext(UserContext)
 
     useEffect(() => {
         if (authState.username){
-            selectUser(searchDispatch, authState.user)
+            selectUser(userDispatch, authState.user, authState.user)
             navigate('/profile')
 
         }

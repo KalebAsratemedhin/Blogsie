@@ -24,10 +24,10 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { NotificationAdd, Person, Person2Rounded, Person2Sharp, PersonOutline, PersonOutlineRounded, PersonPinCircle, PersonSearchOutlined } from '@mui/icons-material';
-import { searchUsers } from '../actions/search';
-import { SearchContext } from '../contexts/SearchContext';
+import { searchUsers } from '../actions/user';
+import { UserContext } from '../contexts/UserContext';
 
-import { selectUser } from '../actions/search'
+import { selectUser } from '../actions/user'
 
 
 
@@ -78,14 +78,14 @@ const Layout = ({children}) => {
   const [searchQuery, setSearchQuery] = useState()
   const navigate = useNavigate()
   const location = useLocation()
-  const {state: searchState, dispatch: searchDispatch} = useContext(SearchContext)
+  const {state: userState, dispatch: userDispatch} = useContext(UserContext)
   
 
   const handleSearch = () => {
     if (location.pathname != '/search'){
       navigate('/search')
     }
-    searchUsers(searchDispatch, searchQuery)
+    searchUsers(userDispatch, searchQuery)
 
   }
 
@@ -157,7 +157,7 @@ const Layout = ({children}) => {
           {state?.username && <Typography variant="h5" color="initial">{state.username}</Typography> }
 
           <IconButton  onClick={() => {
-              selectUser(searchDispatch, state.user)
+              selectUser(userDispatch, state.user, state.user)
               navigate('/profile')
             } } sx={{ color: 'white' }}>
               <Person2Rounded />

@@ -1,14 +1,14 @@
 import { AuthProvider } from './AuthContext';
 import { BlogProvider } from './BlogContext';
-import { SearchProvider } from './SearchContext';
+import { UserProvider } from './UserContext';
 
 const AppProviders = ({ children }) => {
   return (
     <AuthProvider>
       <BlogProvider>
-        <SearchProvider>
+        <UserProvider>
           {children}
-        </SearchProvider>
+        </UserProvider>
       </BlogProvider>
     </AuthProvider>
   );

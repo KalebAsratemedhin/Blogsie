@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { SearchContext } from "../contexts/SearchContext";
+import { UserContext } from "../contexts/UserContext";
 import {
     List,
     ListItemText,
@@ -12,12 +12,14 @@ import {
 
 
 } from '@mui/material'
-import { selectUser } from "../actions/search";
+import { selectUser } from "../actions/user";
+import { AuthContext } from "../contexts/AuthContext";
 
 const SearchResults = () => {
-    const {state: searchState, dispatch: searchDispatch} = useContext(SearchContext)
+    const {state: userState, dispatch: userDispatch} = useContext(UserContext)
     const navigate = useNavigate()
-    const users = searchState.users
+    const users = userState.searchResult
+    const {state: authState, dispatch: authDispatch} = useContext(AuthContext)
 
   return (
 
@@ -29,7 +31,7 @@ const SearchResults = () => {
          {  
              users.map((user) => {
                  return <ListItemButton onClick={() =>{
-                    selectUser(searchDispatch, user)
+                    selectUser(userDispatch, user, authState.user)
                     navigate(`/profile`)
                  }} alignItems="flex-start" >
                  <ListItemAvatar>

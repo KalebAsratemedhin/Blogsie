@@ -7,22 +7,21 @@ import {
     IconButton
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { SearchContext } from '../contexts/SearchContext';
-import { searchUsers } from '../actions/search';
+import { UserContext } from '../contexts/UserContext';
+import { searchUsers } from '../actions/user';
 import { useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const {state: searchState, dispatch: searchDispatch} = useContext(SearchContext)
+    const {state: userState, dispatch: userDispatch} = useContext(UserContext)
     const navigate = useNavigate();
-    const users = searchState.users
+    const users = userState.users
 
 
     const handleSearch = async () => {
-      console.log("here we go search", searchTerm)
 
       if (searchTerm){
-        await searchUsers(searchDispatch, searchTerm)
+        await searchUsers(userDispatch, searchTerm)
 
       }
     }

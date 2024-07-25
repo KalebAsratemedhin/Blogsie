@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import CreateBlog from "./pages/CreateBlog";
 import Blogs from "./pages/Blogs";
 import BlogDetails from "./pages/BlogDetails";
-import People from "./pages/People";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import { AuthContext } from "./contexts/AuthContext";

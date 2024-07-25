@@ -13,20 +13,20 @@ import {  Link, useNavigate } from 'react-router-dom'
 import { useContext, useState, useEffect} from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { login } from '../actions/auth'
-import { SearchContext } from '../contexts/SearchContext'
 
-import { selectUser } from '../actions/search'
+import { selectUser } from '../actions/user'
+import { UserContext } from '../contexts/UserContext'
 
 const Login = () => {
     const navigate = useNavigate()
     const {state, dispatch} = useContext(AuthContext)
     const [credentials, setCredentials] = useState({username: '', password: ''})
-    const {state: searchState, dispatch: searchDispatch} = useContext(SearchContext)
+    const {state: userState, dispatch: userDispatch} = useContext(UserContext)
 
     useEffect(() => {
       if(state.isAuthenticated){
         console.log(state.user, "logging")
-        selectUser(searchDispatch, state.user)
+        selectUser(userDispatch, state.user, state.user)
         navigate('/profile')
       }
 

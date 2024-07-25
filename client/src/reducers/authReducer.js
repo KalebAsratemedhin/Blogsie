@@ -45,10 +45,7 @@ export const authReducer = (state, action) => {
         case LOGOUT_REQUEST:
             return { ...state, isAuthenticated: false, username: null };
     
-        case PROFILE_SUCCESS:
-            localStorage.setItem('user', JSON.stringify(action.payload))
-              
-            return { ...state, loading: false, user: action.payload };
+        
     
         default:
             return state;

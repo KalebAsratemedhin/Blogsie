@@ -28,7 +28,6 @@ const CreateBlog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // const location = useLocation()
 
     if(authState.username){
       await addBlog(blogDispatch, blog )
