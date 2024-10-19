@@ -1,62 +1,117 @@
-const Blog = require('../models/blogModel')
+const Blog = require("../models/blog");
 
-const getBlogs = async (req, res) => {
-    const {username} = req.params
-    try{
-        const blogs = await Blog.find({username})
-        console.log("my blogs", blogs)
-        res.status(200).json(blogs)
-    } catch(error){
-        res.status(500).json({message: error})
+const findAllUserBlogs = async (req, res) => {
+    try {
+      const { page = 1, limit = 10 } = req.query;
+      const skip = (page - 1) * limit;
+
+      const blogs = await Blog.find({patientId: req.user.id}).sort({
+          date: 1,
+        }).skip(skip)
+          .limit(parseInt(limit))
+          .populate('username')
+        
+      
+      const totalBlogs = await Blog.countDocuments();
+
+      return res.status(200).json({
+          totalPages: Math.ceil(totalBlogs / limit),
+          currentPage: page,
+          blogs,
+      });
+
+    } catch (error) {
+        res.status(500).send({message: error.message})
     }
-} 
+}
+
+
+const findOneBlog = async (req, res) => {
+  try {
+      const {id} = req.params
+      const blog = await Blog.findById(id).populate('username');
+      return res.status(200).json({data: blog})
+
+  } catch (error) {
+      res.status(500).send({message: error.message})
+
+  }
+
+}
+
 
 const createBlog = async (req, res) => {
-    try{
+    try {
+        
         const {title, body, date} = req.body
 
-        // const {username} = req.user
-        
-        const newBlog = await Blog.create({
+        const existing = await Blog.findOne({title, date, username: req.user.username})
+
+        if(existing){
+            return res.status(402).json({message: "Blog already exists"})
+            
+        }
+        const blog = await Blog.create({
             title,
+            username: req.user.username,
             body,
-            username,
-            date
-        }) 
-        
-        res.status(201).json(newBlog)
-    } catch(error){
-        res.status(500).json({message: error})
-        
+            date  
+        });
+
+        return res.status(201).json(blog)
+
+    } catch (error) {
+        res.status(500).send({message: error.message})
+
     }
+
 }
 
 const updateBlog = async (req, res) => {
     try {
-      const update = req.body;
-      const { id } = req.params;
-      const { username } = req.user;
-  
-      console.log("blog update", id, update, username);
-  
-      const blog = await Blog.findOne({ _id: id });
-      if (!blog) {
-        return res.status(404).json({ message: "No such blog." });
-      }
-  
-      if (blog.username !== username) {
-        return res.status(401).json({ message: "Unauthorized." });
-      }
-  
-      const updated = await Blog.findByIdAndUpdate(id, update, { new: true });
-      return res.status(200).json(updated);
+        const {id} = req.params;
+        const { date, title, body } = req.body
+
+        const result = await Blog.findByIdAndUpdate(id, {
+            date,
+            title,
+            body
+        });
+
+        return res.status(201).json(result)
+
     } catch (error) {
-      res.status(500).json({ message: error.message });
+        res.status(500).send({message: error.message})
+
     }
-  };
-  
+
+}
+
+const deleteBlog = async (req, res) => {
+    try {
+        
+        const {id} = req.params;
+        const result = await Blog.findByIdAndDelete(id);
+
+
+        if(!result){
+            return res.status(404).json({message: "Not found"})
+        }
+
+        return res.status(204).json({message: "Sucessfully deleted."})
+
+    } catch (error) {
+        res.status(500).json({message: error.message})
+
+    }
+
+}
+
+
 module.exports = {
-    getBlogs,
+    findAllUserBlogs,
+    findOneBlog,
     createBlog,
-    updateBlog
+    updateBlog,
+    deleteBlog
 }

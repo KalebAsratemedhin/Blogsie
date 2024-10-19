@@ -1,7 +1,0 @@
-export const ADD_BLOG = 'ADD_BLOG';
-export const REMOVE_BLOG = 'REMOVE_BLOG';
-export const EDIT_BLOG = 'EDIT_BLOG';
-export const FETCH_BLOGS_REQUEST = 'FETCH_BLOGS_REQUEST';
-export const FETCH_BLOGS_SUCCESS = 'FETCH_BLOGS_SUCCESS';
-export const FETCH_BLOGS_FAILURE = 'FETCH_BLOGS_FAILURE';
-

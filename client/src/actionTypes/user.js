@@ -1,9 +1,0 @@
-export const REQUEST = 'REQUEST'
-export const FAILURE = 'FAILURE'
-
-export const SEARCH_SUCCESS = 'SEARCH_SUCCESS'
-export const BLOGS_SUCCESS = 'BLOGS_SUCCESS'
-  
-export const SELECT_USER = 'SELECT_USER'
-export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS'
-export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS'

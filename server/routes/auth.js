@@ -1,12 +1,34 @@
-const express = require('express')
-const router = express.Router()
-const authController = require('../controllers/auth')
-const authenticateToken = require('../middlewares/authenticateToken')
+const express = require('express');
+const {
+    signin,
+    signup,
+    googleAuthSuccess
+} = require('../controllers/auth.js')
+const passport = require('passport');
 
-router.get('/check-session', authenticateToken, authController.checkSession)
-router.post('/signup', authController.signup)
-router.post('/login', authController.login)
-router.post('/logout', authController.logout)
+const router = express.Router();
+ 
 
+router.post('/signup', signup);
+
+router.post('/signin', signin)
+
+router.get('/google', (req, res, next) => {
+  console.log('initiated')
+    next();
+  }, passport.authenticate('google', {
+  scope: ['profile', 'email']  
+}));
+
+router.get('/google/callback', (req, res, next) => {
+  console.log('done' )
+
+    next(); 
+  }, passport.authenticate('google', { session: false }), googleAuthSuccess);
+
+
+router.get('/auth/error', (req, res) => {
+    res.status(401).json({ error: 'Google OAuth authentication failed' });
+});
 
 module.exports = router

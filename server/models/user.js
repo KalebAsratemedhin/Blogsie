@@ -1,47 +1,45 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose'); 
 
 const userSchema = mongoose.Schema(
     {
-        
         fullName: {
-            type: String,
-            required: true
-        },
-        username: {
             type: String,
             required: true,
         },
         email: {
             type: String,
             required: true,
+            unique: true,
+            match: [/.+@.+\..+/, 'Please enter a valid email address'], 
+        },
+        username: {
+            type: String,
+            unique: true, 
+            required: true,
         },
         password: {
             type: String,
-            required: true
+            validate: {
+                validator: function(value) {
+                    return this.googleId || (value && value.length > 0);
+                },
+                message: 'Password is required for non-Google users.'
+            }
         },
         bio: {
             type: String,
-            required: true
         },
         profilePic: {
-            type: String, 
+            type: String,
         },
-        followers: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            }
-        ],
-        following: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            }
-        ],
-
+        googleId: {  
+            type: String
+        }
+    },
+    {
+        timestamps: true,  
     }
-)
+); 
 
-const User = mongoose.model('User', userSchema)
-
-module.exports = User
+const User = mongoose.model('User', userSchema);
+module.exports = User;

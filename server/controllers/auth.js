@@ -1,102 +1,79 @@
-const User = require('../models/user')
-const {verifyToken, generateToken} = require('../utils/jwtUtils')
-const bcrypt = require('bcrypt')
+const User = require('../models/user.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const secret = process.env.JWT_SECRET;
 
-
-const checkSession = async (req, res) => {
-    try {
-        const token = req.cookies.token
-        const {username} = verifyToken(token);
-        console.log("username", username, email)
-        if(username && email){
-            console.log("Have a session")
-            return res.status(200).json({username, email})
-
-        }
-        console.log("DOnt Have a session")
-
-        return res.status(404).json({})
-
-
-    } catch (error) {
-        console.log("Have an error")
-
-        res.status(500).json({message: error})
-
-    }
-}
 
 const signup = async (req, res) => {
-    const {fullName, email, username, password, bio} = req.body
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const { role, fullName, password, email, phoneNumber } = req.body;
 
-    try{
-        const [duplicate] = await User.find({email: email, username: username})
-        if (duplicate){
-            console.log(duplicate, "duplicate")
-            return res.status(500).json({message: "Duplicate account found."})
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const duplicate = await User.findOne({ email });
 
+        if (duplicate) {
+            return res.status(409).json({ message: 'Duplicate account found.' });
         }
-        
+
         const user = await User.create({
-            fullName: fullName,
-            email: email,
-            username: username,
+            fullName,
+            phoneNumber,
+            email,
+            role,
             password: hashedPassword,
-            bio: bio
+        });
 
-        })
-        const token = generateToken(username, email);
+        const payload = { id: user._id, username: user.username };
+        const token = jwt.sign(payload, secret, { expiresIn: '1h' });
 
-        res.cookie('token', token, { httpOnly: true, secure: true }); 
-        res.status(201).json({ user });
+        res.status(201).json({ accessToken: token, data: {
+            id: user._id, 
+            username: user.username
+        } });
 
     } catch (error) {
-        res.status(400).json({ message: 'Error registering user', error });
+        res.status(500).json({ message: 'Server Error.' });
     }
-}
+};
 
 
-const login = async (req, res) => {
-    const {username, password} = req.body
+const signin = async (req, res) => {
     try {
-        const user = await User.findOne({ username: username });
-        if(!user){
-            return res.status(404).json({message: 'Wrong credentials!'})
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
         }
 
-        bcrypt.compare(password, user.password).then(isMatch => {
-            if (isMatch) {
-                const token = generateToken(user.username, user.email);
-                
-                res.cookie('token', token, { httpOnly: true, secure: true });
-                res.status(201).json({ user });
-            } else {
-              return res.status(400).json({ message: 'Invalid username or password' });
-            }
-          });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Incorrect password' });
+        }
 
-        
+        const payload = { id: user._id, username: user.username };
+        const token = jwt.sign(payload, secret, { expiresIn: '2h' });
 
-      } catch (error) {
-        res.status(500).json({ message: error });
-      }
-}
+        res.status(200).json({ accessToken: token, data: {
+            id: user._id, 
+            username: user.username
+        } });
 
-const logout = async (req, res) => {
-    res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 5 * 1000),
-        httpOnly: true,
-    })
-    res
-        .status(200)
-        .json({ success: true, message: 'User logged out successfully' })
-}
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+const googleAuthSuccess = async (req, res) => {
+    const token = jwt.sign({ id: req.user.id, username: req.user.username }, secret, { expiresIn: '2h' });
+    const redirectUrl = `${process.env.CLIENT_URL}/google-auth?id=${req.user.id}&role=${req.user.role}&token=${token}`;
+    res.redirect(redirectUrl);  
+};
 
 
 module.exports = {
-    checkSession,
     signup,
-    login,
-    logout
-}
+    signin,
+    googleAuthSuccess
+};
