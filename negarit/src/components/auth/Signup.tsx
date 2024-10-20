@@ -1,44 +1,43 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import { setAuth } from "../../redux/slices/authSlice";
 import { FcGoogle } from "react-icons/fc";
 import TextField from "../shared/TextField"; 
-// import FormError from "../utils/FormError";
+import FormError from '../shared/FormError';
+
+import { useSignupMutation } from "../../redux/api/authAPI";
+import Spinner from "../shared/Spinner";
+import { SignupCredential } from '../../redux/types/auth';
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 
-interface FormData {
-  password: string;
-  fullName: string;
-  email: string;
-  username: string;
-}
 
-const SignupForm: React.FC = () => {
-    const { formState: { errors, isValid }, register, handleSubmit } = useForm<FormData>({
-        mode: 'onChange'
-      });
-    
-    //   const navigate = useNavigate();
-    //   const dispatch = useDispatch();
-    
-      const onSubmit = async (data: FormData) => {
-        // if (isValid) {
-        //   const result = await signupUser(data as SignupCredential);
-        //   console.log('result signup', result);
-        // }
-      };
-    
-    //   useEffect(() => {
-    //     if (isSuccess) {
-    //       console.log('signup data', signupData)
-    //       dispatch(setAuth(signupData));
-    //       navigate('/dashboard');
-    //     }
-    //   }, [isSuccess]);
-    
+const SignupForm = () => {
+  const { formState: { errors, isValid }, register, handleSubmit } = useForm<SignupCredential>({
+    mode: 'onChange'
+  });
+
+  const [signupUser, { isLoading, isSuccess, error, data: signupData }] = useSignupMutation();
+  const navigate = useNavigate();
+
+
+  const onSubmit = async (data: SignupCredential) => {
+    console.log(backendUrl)
+    if (isValid) {
+      await signupUser(data);
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      localStorage.setItem('token', signupData.accessToken)
+      navigate('/profile');
+    }
+  }, [isSuccess]);
+
+  if (isLoading) return <Spinner />;
+
 
   return (
     <div className="border shadow-lg bg-white  xl:w-2/5 h-full p-4 flex flex-col justify-center items-center rounded-md">
@@ -56,7 +55,7 @@ const SignupForm: React.FC = () => {
         <p>or</p>
         <p className="bg-gray-400 h-[1px] w-1/3"></p>
       </div>
-      {/* {isError && <FormError error={error} />} */}
+      {error && <FormError error={error} />} 
 
 
       <TextField

@@ -4,22 +4,20 @@ const upload = require("../middlewares/fileUpload");
 const getUser = async (req, res) => {
     try {
         const { id } = req.user;
+        console.log('find user', id, req.user) 
         const user = await User.findById(id);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        if (user.role === 'doctor') {
-            const doctor = await Doctor.findOne({ userId: user._id });
-            return res.status(200).json({ ...user.toObject(), doctorData: doctor });
-        }
-
-        res.status(200).json(user.toObject());
+        
+        return res.status(200).json({ ...user.toObject() });
+    
     } catch (error) {
         res.status(500).json({ message: 'Server Error.' });
     }
-};
+}; 
 
 
 const findAllUsers = async (req, res) => {

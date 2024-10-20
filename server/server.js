@@ -49,8 +49,8 @@ const corsOpts = {
     credentials: true,
     methods: ['GET', 'POST', 'HEAD', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],  
-    exposedHeaders: ['Content-Type']
-  };
+    exposedHeaders: ['Content-Type'] 
+  }; 
 const app = express();
 const PORT = process.env.PORT; 
 app.use(cors(corsOpts));
