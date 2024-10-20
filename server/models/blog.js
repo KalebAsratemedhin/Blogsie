@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const bookingSchema = mongoose.Schema(
     {
-        username:{
+        author:{
             type: mongoose.SchemaTypes.ObjectId,
             ref: "User",
             requried: true
@@ -11,10 +11,14 @@ const bookingSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        body: {
+        markdown: {
             type: String,
             required: true,
         },
+        tags: {
+            type: [String], 
+            required: true,
+        },        
         date: {
             type: Date,
             required: true,

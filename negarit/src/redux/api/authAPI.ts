@@ -7,16 +7,7 @@ export const authAPI = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({
         baseUrl: `${backendUrl}/auth`,
-        credentials: "include",
-        prepareHeaders: (headers) => {
-            // const token = localStorage.getItem('token');
-            
-            // if (token) {
-            //     headers.set('Authorization', `Bearer ${token}`);
-            // }
-
-            // return headers;
-        },
+        credentials: "include"
     }),
     endpoints: (builder) => ({
         signup: builder.mutation<AuthResponse, SignupCredential >({

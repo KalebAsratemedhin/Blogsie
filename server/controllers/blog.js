@@ -43,19 +43,17 @@ const findOneBlog = async (req, res) => {
 const createBlog = async (req, res) => {
     try {
         
-        const {title, body, date} = req.body
+        const body = req.body
 
-        const existing = await Blog.findOne({title, date, username: req.user.username})
+        const existing = await Blog.findOne({title, date, author: req.user.username})
 
         if(existing){
             return res.status(402).json({message: "Blog already exists"})
             
         }
         const blog = await Blog.create({
-            title,
-            username: req.user.username,
-            body,
-            date  
+            author: req.user.username,
+            ...body
         });
 
         return res.status(201).json(blog)

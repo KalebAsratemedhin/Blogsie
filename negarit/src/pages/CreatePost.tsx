@@ -1,7 +1,11 @@
+import BlogEditor from "../components/blog/BlogEditor"
 
 const CreatePost = () => {
   return (
-    <div>CreatePost</div>
+    <div>
+      <BlogEditor />
+
+    </div>
   )
 }
 

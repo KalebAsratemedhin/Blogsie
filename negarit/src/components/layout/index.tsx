@@ -28,7 +28,7 @@ const Layout = () => {
     
         <div className="flex flex-col w-full overflow-y-auto ">
           <Header  />
-          <div className="flex-grow  ">
+          <div className="flex-grow min-h-screen  ">
             <Outlet />
           </div>
           <Footer /> 

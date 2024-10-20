@@ -39,8 +39,8 @@ const signup = async (req, res) => {
 
 const signin = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
 
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });

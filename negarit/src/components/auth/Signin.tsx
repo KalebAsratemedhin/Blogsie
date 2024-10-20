@@ -7,49 +7,33 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FcGoogle } from "react-icons/fc";
 import TextField from "../shared/TextField";
+import { SigninCredential } from "../../redux/types/auth";
+import { useSigninMutation } from "../../redux/api/authAPI";
+import Spinner from "../shared/Spinner";
+import FormError from "../shared/FormError";
 // import FormError from "../utils/FormError";
 // const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 
-interface FormData{
-    email: string;
-    password: string;
-    role: string;
-}
-
 const Signin = () => {
-    const {formState: {errors}, register, handleSubmit} = useForm<FormData>({
-        defaultValues: {
-            role: 'patient',
-        },
+    const [signinUser, {isLoading, isError, isSuccess, error, data}] = useSigninMutation()
+    const {formState: {errors}, register, handleSubmit} = useForm<SigninCredential>({
         mode: 'onChange'
     });
-    // const navigate = useNavigate()
-    // const dispatch = useDispatch()
-    // const authState = useSelector(authSelector)
-    const onSubmit = async(data: FormData) => {
-
-        // const result = await signinUser(data)
-        // console.log('singin result', result)
-
+    const navigate = useNavigate()
+  
+    const onSubmit = async(data: SigninCredential) => {
+         await signinUser(data)
     }
 
-    // useEffect(() => {
-    //     if(isSuccess){
-    //         console.log('just success', authState, data)
-            
+    useEffect(() => {
+        if(isSuccess){      
+            localStorage.setItem('token',data.accessToken)
+            navigate('/profile')
+        }
 
-
-    //         dispatch(setAuth(data))
-
-    //     }
-    //     if(authState.id){
-    //         console.log(authState.id, 'email', authState.role)
-    //         navigate('/dashboard')
-    //     }
-
-    // }, [isSuccess, authState])
+    }, [isSuccess, data])
 
     
   return (
@@ -66,24 +50,18 @@ const Signin = () => {
                 <p className="bg-gray-400 h-[1px] w-1/3"></p>
             </div>  
 
-            {/* {isLoading && <Spinner />}
-            {isError && <FormError error={error} />} */}
+            
+            {isLoading && <div className="w-12 h-12 border-4 border-t-transparent border-gray-800 border-solid rounded-full animate-spin"></div>}
+            {isError && <FormError error={error} />}
 
             
-
             <TextField
-                label="Email"
-                id="email"
-                type="email"
+                label="Username"
+                id="username"
+                type="text"
                 register={register}
-                validation={{
-                required: "Email is required",
-                pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Email should include letters and digits"
-                }
-                }}
-                error={errors.email?.message}
+                validation={{ required: "Username is required" }}
+                error={errors.username?.message}
             />
 
             <TextField
